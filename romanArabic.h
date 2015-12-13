@@ -20,6 +20,7 @@ class romanArabic{
   bool arabicValid;
   bool romanValid;
   void checkPosition(int pos, int value, char checkChar, string prev, string next);
+
  public:
   bool isArabicValid();
   bool isRomanValid();
@@ -32,34 +33,41 @@ class romanArabic{
 romanArabic::romanArabic(string romanForFormat){
   roman = romanForFormat;
   arabicValid = true;
-  
+
   if(roman[0] != 'M' && roman[0] != 'D' && roman[0] != 'C' && roman[0] != 'L' && roman[0] != 'X' 
      && roman[0] != 'V' && roman[0] != 'I')
     romanValid = false;
-  else{
+  else {
     arabic = 0;
     romanValid = true;
   }
 
-  
+
   for(int i = 0; i < roman.size() && romanValid; i++){
     if(romanValid){
       if(roman[i] == 'M')
-	arabic += M;
+        arabic += M;
+
       else if(roman[i] == 'D')
-	checkPosition(i, D, 'D', "", "DCLXVI");
+        checkPosition(i, D, 'D', "", "DCLXVI");
+
       else if(roman[i] == 'C')
-	checkPosition(i, C, 'C', "MD", "CLXVI");
+        checkPosition(i, C, 'C', "MD", "CLXVI");
+
       else if(roman[i] == 'L')
-	checkPosition(i, L, 'L', "", "LXVI");
+        checkPosition(i, L, 'L', "", "LXVI");
+
       else if(roman[i] == 'X')
-	checkPosition(i, X, 'X', "CL", "XVI");
+        checkPosition(i, X, 'X', "CL", "XVI");
+
       else if(roman[i] == 'V')
-	checkPosition(i, V, 'V', "", "VI");
+        checkPosition(i, V, 'V', "", "VI");
+
       else
-	checkPosition(i, I, 'I', "XV", "I");
+        checkPosition(i, I, 'I', "XV", "I");
     }
   }
+
   if(!romanValid){
     cout << "Invalid input." << endl << endl;
     arabic = -1;
@@ -70,72 +78,87 @@ romanArabic::romanArabic(int arabicForFormat){
   arabic = arabicForFormat;
   arabicValid = true;
   romanValid = true;
-  if(arabic > 3999 || arabic < 1)
-    arabicValid = false;
   roman = "";
-  
+
+
+  if( arabic > 3999 || arabic < 1 )
+    arabicValid = false;
+
   if(arabicValid){
-    for(int i = 0; arabic != 0; i++){
-      if(arabic >= M){
-	arabic -= M;
-	roman.push_back('M');
+    for( int i = 0; arabic != 0; i++ ){
+      if( arabic >= M ){
+        arabic -= M;
+        roman.push_back('M');
       }
+
       else if(arabic >= M-C){
-	arabic -= M-C;
-	roman.push_back('C');
-	roman.push_back('M');
+        arabic -= M-C;
+        roman.push_back('C');
+        roman.push_back('M');
       }
+
       else if(arabic >= D){
-	arabic -= D;
-	roman.push_back('D');
+        arabic -= D;
+        roman.push_back('D');
       }
+
       else if(arabic >= D-C){
-	arabic -= D-C;
-      roman.push_back('C');
-      roman.push_back('D');
+        arabic -= D-C;
+        roman.push_back('C');
+        roman.push_back('D');
       }
+
       else if(arabic >= C){
-	arabic -= C;
-	roman.push_back('C');
+        arabic -= C;
+        roman.push_back('C');
       }
+
       else if(arabic >= C-X){
-	arabic -= C-X;
-	roman.push_back('X');
-	roman.push_back('C');
+        arabic -= C-X;
+        roman.push_back('X');
+        roman.push_back('C');
       }
+
       else if(arabic >= L){
-	arabic -= L;
-	roman.push_back('L');
+        arabic -= L;
+        roman.push_back('L');
       }
+
       else if(arabic >= L-X){
-	arabic -= L-X;
-	roman.push_back('L');
-	roman.push_back('X');
+        arabic -= L-X;
+        roman.push_back('L');
+        roman.push_back('X');
       }
+
       else if(arabic >= X){
-	arabic -= X;
-	roman.push_back('X');
+        arabic -= X;
+        roman.push_back('X');
       }
+
       else if(arabic >= X-I){
-	arabic -= X-I;
-	roman.push_back('I');
-	roman.push_back('X');
+        arabic -= X-I;
+        roman.push_back('I');
+        roman.push_back('X');
       }
+
       else if(arabic >= V){
-	arabic -= V;
-	roman.push_back('V');
+        arabic -= V;
+        roman.push_back('V');
       }
+
       else if(arabic >= V-I){
-	arabic -= V-I;
-	roman.push_back('I');
-	roman.push_back('V');
+        arabic -= V-I;
+        roman.push_back('I');
+        roman.push_back('V');
       }
+
       else{
-	arabic -= I;
-	roman.push_back('I');
+        arabic -= I;
+        roman.push_back('I');
       }
-    } 
+    }
   }
+
   else{
     cout << "Invalid input." << endl << endl;
     roman = "invalid";
@@ -152,10 +175,11 @@ void romanArabic::checkPosition(int pos, int value, char checkChar, string prev,
       shouldSubtract = true;
     }
   }
+
   if(!shouldSubtract){
     for(int i = 0; i <= next.size(); i++){
       if(roman[pos+1] == next[i]){
-	  shouldAdd = true;
+        shouldAdd = true;
       }
     }
   }
@@ -166,13 +190,15 @@ void romanArabic::checkPosition(int pos, int value, char checkChar, string prev,
       romanValid = false;
     }
   }
-  
+
   if(shouldSubtract){
     arabic -= value;
   }
+
   else if(shouldAdd){
     arabic += value;
   }
+
   else
     romanValid = false;
 }
